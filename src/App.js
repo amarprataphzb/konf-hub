@@ -1,24 +1,32 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Header from './header/Header';
+import MainPage from './mainpage/MainPage';
+import axios from 'axios';
+import { useState,useEffect } from 'react';
 
 function App() {
+  
+  const[fetchingData,setFetchingData]=useState()
+  useEffect(()=>{
+      getfetchData();
+  },[])
+
+  const getfetchData=async()=>{
+      try {
+          const result= await axios('https://dev-api.konfhub.com/event/public/konfhub-frontend-evaluation-task')
+        setFetchingData(result.data)
+      } catch (error) {
+          console.log(error)
+      }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Header data={fetchingData}/>
+     <MainPage data={fetchingData}/>
     </div>
+
+    
   );
 }
 
